@@ -1,5 +1,0 @@
-<classpath>
-    <classpathentry kind="lib" path="D:/SEECS/3rd Semester/Database Systems/Sem Project/zzzzZZZZ/DB project/lib/mysql-connector-j-9.1.0.jar"/>
-    <classpathentry kind="src" path="src"/>
-    <classpathentry kind="output" path="bin"/>
-</classpath>
