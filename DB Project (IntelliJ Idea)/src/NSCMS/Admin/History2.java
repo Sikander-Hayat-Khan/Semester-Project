@@ -104,7 +104,7 @@ class admin2 extends JFrame {
             panel.setPreferredSize(new Dimension(1000, 200));
             Border border = BorderFactory.createLineBorder(Color.BLACK);
             panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING), border));
-            panel.setBackground(Color.WHITE);
+            panel.setBackground(Color.CYAN);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
             String timestampString = formatter.format(new Date(History2.time.get(i-1).getTime()));

@@ -47,9 +47,9 @@ class gentryLoginPage
         frame.setSize(1200, 900);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB project\\Assets\\WhatsApp Image 2024-12-02 at 13.21.07_4d328b63.jpg");
-        ImageIcon nustIcon = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB project\\Assets\\WhatsApp Image 2024-12-02 at 13.21.07_cc7b17f1.jpg");
-        ImageIcon buttonBackground = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\button.jpg");
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
+        ImageIcon nustIcon = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\NUST_Logo-removebg-preview.png");
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
         nustLogo = new JLabel(nustIcon);
 
@@ -125,12 +125,13 @@ class gentryLoginPage
                     public void actionPerformed(ActionEvent e) {
                         if(!idTf.getText().trim().isEmpty() && !passwordTf.getText().trim().isEmpty()){
                             id=Integer.parseInt(idTf.getText());
+                            System.out.println(id);
                             String enteredPassword = passwordTf.getText();
-                            final String DB_URL = "jdbc:mysql://localhost:3306/";
+                            final String DB_URL = "jdbc:mysql://localhost:3306/project";
                             final String USERNAME = "root";
                             final String PASSWORD = "Hashim#00789";
                             int paymentstatus=0;
-                            String sql = "SELECT gymmembership.paymentstatus FROM project.users,project.gymmembership WHERE users.userId=gymmembership.Users_userId AND userId="+id;
+                            String sql = "SELECT gym_membership.paymentstatus FROM project.users,project.gym_membership WHERE users.userId=gym_membership.Users_userId AND userId="+id;
                             String sql1 = "SELECT userId FROM project.users WHERE password=md5(\""+enteredPassword+"\");";
                             try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
                                 try {
@@ -140,6 +141,7 @@ class gentryLoginPage
                                         paymentstatus = rs.getInt("paymentstatus");
                                         rs.close();
                                     }
+                                    System.out.println(paymentstatus);
                                     statement.close();
                                 } catch (SQLException e1) {
                                     e1.printStackTrace();
