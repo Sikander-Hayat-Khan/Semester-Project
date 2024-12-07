@@ -35,9 +35,9 @@ class GymMembership
         startSubciptionsLabel.setForeground(Color.ORANGE);
         startSubciptionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        ImageIcon background = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\bg.jpg");
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
         ImageIcon nustIcon = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\logo.png");
-        ImageIcon buttonBackground = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\button.jpg");
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
         menuBackground = new JLabel(background);
         nustLogo = new JLabel(nustIcon);
@@ -71,6 +71,7 @@ class GymMembership
         signupButton.setHorizontalTextPosition(SwingConstants.CENTER);
         signupButton.setVerticalTextPosition(SwingConstants.CENTER);
         signupButton.setBorder(new LineBorder(Color.ORANGE, 3));
+        // Inside the signupButton MouseListener
         signupButton.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 signupButton.setSize(270, 100);
@@ -82,39 +83,53 @@ class GymMembership
 
             public void mouseClicked(MouseEvent e)
             {
-                JFileChooser fc= new JFileChooser();
+                JFileChooser fc = new JFileChooser();
                 fc.setFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png"));
                 int returnValue = fc.showOpenDialog(frame);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fc.getSelectedFile();
+                    String filePath = selectedFile.getAbsolutePath();
+                    filePath = filePath.replace("\\", "/");
+                    System.out.println("Selected File: " + selectedFile);
+                    System.out.println("Formatted File Path: " + filePath);
+
                     try {
-                        //BufferedImage image = ImageIO.read(selectedFile);
-                        //ImageIcon icon = new ImageIcon(image);
                         FileInputStream fis = new FileInputStream(selectedFile);
                         final String DB_URL = "jdbc:mysql://localhost:3306/";
                         final String USERNAME = "root";
                         final String PASSWORD = "Hashim#00789";
 
                         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
-                            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO project.gymmembership (paymentstatus,Receipt,Users_userId) VALUES (0,?,"+id+")");
-                            pstmt.setBinaryStream(1, fis, (int)fis.available());
-                            pstmt.executeUpdate();
-
-                            fis.close();
+                            // Insert the receipt with paymentstatus 0 (pending)
+                            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO project.gym_membership (paymentstatus, Receipt, Users_userId) VALUES (0, ?, ?)");
+                            pstmt.setBinaryStream(1, fis, (int) fis.available());
+                            pstmt.setInt(2, id); // Assuming "id" is the userId
+                            int rowsAffected = pstmt.executeUpdate();
+                            if (rowsAffected > 0) {
+                                // After the receipt is uploaded, update paymentstatus to 1 (completed)
+                                String updateQuery = "UPDATE project.gym_membership SET paymentstatus = 1 WHERE Users_userId = ?";
+                                PreparedStatement updateStmt = connection.prepareStatement(updateQuery);
+                                updateStmt.setInt(1, id); // Update for the current user
+                                updateStmt.executeUpdate();
+                                updateStmt.close();
+                            }
                             pstmt.close();
+                            fis.close();
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }
                     } catch (IOException ex) {
                         JOptionPane.showMessageDialog(frame, "Error reading image file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
-                    JOptionPane.showMessageDialog(frame,"Your Receipt has been uploaded.");
+
+                    JOptionPane.showMessageDialog(frame, "Your Receipt has been uploaded and payment status updated.");
                     frame.setVisible(false);
                     new Dashboard(id);
                     frame.setVisible(false);
                 }
             }
         });
+
 
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e)

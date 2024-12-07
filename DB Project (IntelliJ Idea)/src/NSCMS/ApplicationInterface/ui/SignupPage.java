@@ -65,8 +65,8 @@ public class SignupPage
         frame.setSize(1200, 900);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ImageIcon background = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\bg.jpg");
-        ImageIcon buttonBackground = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\button.jpg");
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
         idTf = new JTextField(20);
         nameTf = new JTextField(40);
@@ -262,13 +262,15 @@ public class SignupPage
                         phone3 = phone3Tf.getText();
                         email = emailTf.getText();
                         password = passwordTf.getText();
-                        String sql2;
+                        String sql2 = "";
                         String sql = "INSERT INTO project.users\nVALUES("+id+",\""+name+"\",\""+school+"\",\""+gender+"\",\""+phone1+"\",\""+phone2+"\",\""+phone3+"\",\""+email+"\",md5(\""+password+"\"),\""+userType+"\");";
                         if(userType == 'S')
                             sql2 = "INSERT INTO project.student\nVALUES("+id+",\""+studentClassTf.getText()+"\");";
-                        else
-                            sql2 = "INSERT INTO project.faculty\nVALUES("+id+",\""+facultyOfficeTf.getText()+"\",\""+designationTf.getText()+"\");";
-                        final String DB_URL = "jdbc:mysql://localhost:3306/";
+                        else if (userType == 'F') {
+                            sql2 = "INSERT INTO project.faculty\nVALUES(" + id + ",\"" + facultyOfficeTf.getText() + "\",\"" + designationTf.getText() + "\");";
+                        }
+
+                        final String DB_URL = "jdbc:mysql://localhost:3306/project";
                         final String USERNAME = "root";
                         final String PASSWORD = "Hashim#00789";
 

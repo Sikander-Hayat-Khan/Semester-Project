@@ -21,9 +21,9 @@ public class Dashboard {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 900);
 
-        ImageIcon background = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\bg.jpg");
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
         ImageIcon nustIcon = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\logo.png");
-        ImageIcon buttonBackground = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\button.jpg");
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
         dashboardBackground = new JLabel(background);
         nustLogo = new JLabel(nustIcon);
@@ -36,17 +36,22 @@ public class Dashboard {
         ridingButton = createButton("HORSE RIDING", buttonBackground);
         timingButton = createButton("SIGN OUT", buttonBackground);
         historyButton = createButton("ACCESS HISTORY", buttonBackground);
-        swimmingSubButton = createButton("SWIMMING SUBSCRIPTION", buttonBackground);
-        gymSubButton = createButton("GYM SUBSCRIPTION", buttonBackground);
-        ridingSubButton = createButton("HORSE RIDING SUBSCRIPTION", buttonBackground);
+
+        swimmingSubButton = createButton("SWIMMING SUBSCRIPTION", buttonBackground, 260);
+        gymSubButton = createButton("GYM SUBSCRIPTION", buttonBackground, 260);
+        ridingSubButton = createButton("HORSE-RIDING SUBSCRIPTION", buttonBackground, 260);
 
         setupButtonListeners();
 
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                setComponentBounds();
+                // Dynamically scale the background image to fit the frame size
+                Image scaledImage = background.getImage().getScaledInstance(frame.getWidth(), frame.getHeight(), Image.SCALE_SMOOTH);
+                dashboardBackground.setIcon(new ImageIcon(scaledImage));
+                setComponentBounds(); // Update positions of other components
             }
         });
+
 
         frame.add(nustLogo);
         frame.add(membershipLabel);
@@ -72,12 +77,23 @@ public class Dashboard {
     }
 
     private JButton createButton(String text, ImageIcon icon) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.BOLD, 25));
+
+        return createButton(text, icon, 260); // Default button width
+    }
+
+    private JButton createButton(String text, ImageIcon icon, int width) {
+        // Split the text into two lines using HTML
+        String formattedText=text;
+        if (text.contains("SUBSCRIPTION")) {
+            formattedText = "<html>" + text.replace(" ", "<br>") + "</html>";
+        }
+        JButton button = new JButton(formattedText);
+        button.setFont(new Font("Arial", Font.BOLD, 20)); // Font size for better readability
         button.setForeground(Color.BLACK);
         button.setIcon(icon);
         button.setHorizontalTextPosition(SwingConstants.CENTER);
         button.setVerticalTextPosition(SwingConstants.CENTER);
+        button.setPreferredSize(new Dimension(width, 90));
         button.setBorder(new LineBorder(Color.ORANGE, 3));
         return button;
     }
@@ -105,11 +121,9 @@ public class Dashboard {
             public void mouseEntered(MouseEvent e) {
                 ((JButton) e.getSource()).setSize(270, 100);
             }
-
             public void mouseExited(MouseEvent e) {
-                ((JButton) e.getSource()).setSize(260, 90);
+                ((JButton) e.getSource()).setSize(260, 100);
             }
-
             public void mouseClicked(MouseEvent e) {
                 action.run();
                 frame.setVisible(false);
@@ -131,5 +145,9 @@ public class Dashboard {
         ridingSubButton.setBounds(frame.getWidth() / 2 + 375, frame.getHeight() / 2 + 50, 260, 90);
         timingButton.setBounds(frame.getWidth() / 2 - 450, frame.getHeight() / 2 + 265, 260, 90);
         historyButton.setBounds(frame.getWidth() / 2 + 150, frame.getHeight() / 2 + 265, 260, 90);
+    }
+
+    public static void main(String[] args) {
+        new Dashboard(1);
     }
 }

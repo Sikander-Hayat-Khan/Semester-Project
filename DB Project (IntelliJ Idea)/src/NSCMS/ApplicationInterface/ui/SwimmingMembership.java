@@ -10,36 +10,33 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class SwimmingMembership
-{
+public class SwimmingMembership {
     private JFrame frame;
     private JLabel menuBackground;
     private JLabel nustLogo;
     private JButton loginButton;
     private JButton signupButton;
-    private JLabel startSubciptionsLabel;
-    @SuppressWarnings("unused")
+    private JLabel startSubscriptionsLabel;
     private int id;
 
-    public SwimmingMembership(int id)
-    {
+    public SwimmingMembership(int id) {
         frame = new JFrame("MAIN MENU");
-        this.id=id;
+        this.id = id;
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setSize(1200, 900);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        ImageIcon background = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\bg.jpg");
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
         ImageIcon nustIcon = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\logo.png");
-        ImageIcon buttonBackground = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\button.jpg");
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
         menuBackground = new JLabel(background);
         nustLogo = new JLabel(nustIcon);
 
-        startSubciptionsLabel = new JLabel("START/RENEW YOUR MEMBERSHIP BY UPLOADING THE RECEIPT");
-        startSubciptionsLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 30));
-        startSubciptionsLabel.setForeground(Color.ORANGE);
-        startSubciptionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        startSubscriptionsLabel = new JLabel("START/RENEW YOUR MEMBERSHIP BY UPLOADING THE RECEIPT");
+        startSubscriptionsLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 30));
+        startSubscriptionsLabel.setForeground(Color.ORANGE);
+        startSubscriptionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         loginButton = new JButton("Back");
         loginButton.setFont(new Font("Arial", Font.BOLD, 25));
@@ -57,7 +54,7 @@ public class SwimmingMembership
                 loginButton.setSize(260, 90);
             }
 
-            public void mouseClicked(MouseEvent e){
+            public void mouseClicked(MouseEvent e) {
                 new Dashboard(id);
                 frame.setVisible(false);
             }
@@ -86,6 +83,11 @@ public class SwimmingMembership
                 int returnValue = fc.showOpenDialog(frame);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fc.getSelectedFile();
+                    String filePath = selectedFile.getAbsolutePath();
+                    filePath = filePath.replace("\\", "/");
+                    System.out.println("Selected File: " + selectedFile);
+                    System.out.println("Formatted File Path: " + filePath);
+
                     try {
                         //BufferedImage image = ImageIO.read(selectedFile);
                         //ImageIcon icon = new ImageIcon(image);
@@ -95,9 +97,9 @@ public class SwimmingMembership
                         final String PASSWORD = "Hashim#00789";
 
                         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
-                            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO project.swimmingmembership (paymentstatus,Receipt,Users_userId) VALUES (0,?,"+id+")");
+                            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO project.swimming_membership (paymentstatus,Receipt,Users_userId) VALUES (1,?,"+id+")");
                             pstmt.setBinaryStream(1, fis, (int)fis.available());
-                            pstmt.executeUpdate();
+                            System.out.println(pstmt.executeUpdate());
 
                             fis.close();
                             pstmt.close();
@@ -115,18 +117,19 @@ public class SwimmingMembership
             }
         });
 
+
+
         frame.addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent e)
-            {
+            public void componentResized(ComponentEvent e) {
                 menuBackground.setBounds(0, 0, frame.getWidth(), frame.getHeight());
-                startSubciptionsLabel.setBounds(frame.getWidth() / 2 - 400, frame.getHeight() / 2 - 550, 800, 500);
+                startSubscriptionsLabel.setBounds(frame.getWidth() / 2 - 400, frame.getHeight() / 2 - 550, 800, 500);
                 nustLogo.setBounds(frame.getWidth() / 2 - 250, frame.getHeight() / 2 - 250, 500, 500);
                 signupButton.setBounds(frame.getWidth() / 2 - 450, frame.getHeight() / 2 + 265, 260, 90);
                 loginButton.setBounds(frame.getWidth() / 2 + 150, frame.getHeight() / 2 + 265, 260, 90);
             }
         });
 
-        frame.add(startSubciptionsLabel);
+        frame.add(startSubscriptionsLabel);
         frame.add(signupButton);
         frame.add(loginButton);
         frame.add(nustLogo);

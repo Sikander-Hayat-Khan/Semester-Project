@@ -34,9 +34,9 @@ public class RidingMembership
         startSubciptionsLabel.setForeground(Color.ORANGE);
         startSubciptionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        ImageIcon background = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\bg.jpg");
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
         ImageIcon nustIcon = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\logo.png");
-        ImageIcon buttonBackground = new ImageIcon("C:\\Users\\LENOVO\\Pictures\\button.jpg");
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
         menuBackground = new JLabel(background);
         nustLogo = new JLabel(nustIcon);
@@ -86,6 +86,11 @@ public class RidingMembership
                 int returnValue = fc.showOpenDialog(frame);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = fc.getSelectedFile();
+                    String filePath = selectedFile.getAbsolutePath();
+                    filePath = filePath.replace("\\", "/");
+                    System.out.println("Selected File: " + selectedFile);
+                    System.out.println("Formatted File Path: " + filePath);
+
                     try {
                         //BufferedImage image = ImageIO.read(selectedFile);
                         //ImageIcon icon = new ImageIcon(image);
@@ -95,9 +100,9 @@ public class RidingMembership
                         final String PASSWORD = "Hashim#00789";
 
                         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
-                            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO project.ridingmembership (paymentstatus,Receipt,Users_userId) VALUES (0,?,"+id+")");
+                            PreparedStatement pstmt = connection.prepareStatement("INSERT INTO project.riding_membership (paymentstatus,Receipt,Users_userId) VALUES (1,?,"+id+")");
                             pstmt.setBinaryStream(1, fis, (int)fis.available());
-                            pstmt.executeUpdate();
+                            System.out.println(pstmt.executeUpdate());
 
                             fis.close();
                             pstmt.close();
