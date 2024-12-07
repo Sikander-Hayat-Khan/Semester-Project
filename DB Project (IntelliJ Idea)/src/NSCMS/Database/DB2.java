@@ -45,7 +45,7 @@ public class DB2 {
             e.printStackTrace();
         }
 
-        String sql = "SELECT userId, name, Usertype, Receipt, paymentstatus FROM ridingmembership INNER JOIN users ON users.userId = ridingmembership.Users_userId;";
+        String sql = "SELECT userId, name, Usertype, Receipt, paymentstatus FROM riding_membership INNER JOIN users ON users.userId = riding_membership.Users_userId;";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
             java.sql.Statement statement = connection.createStatement();
@@ -88,32 +88,34 @@ public class DB2 {
         private JList<JPanel> panelList;
         private DefaultListModel<JPanel> listModel;
 
-
         public AdminGUI() {
             setTitle("Riding Club Admin Dashboard");
             setExtendedState(MAXIMIZED_BOTH);
             setDefaultCloseOperation(EXIT_ON_CLOSE);
-            setVisible(true);
-            setLayout(null);
+            setLayout(new BorderLayout());
 
-            final ImageIcon bg = new ImageIcon("C:/Users/LENOVO/Pictures/bg.jpg");
-            final ImageIcon logo = new ImageIcon("C:/Users/LENOVO/Pictures/logo.png");
-            final ImageIcon button = new ImageIcon("C:/Users/LENOVO/Pictures/button.jpg");
+            final ImageIcon bg = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
+//            final ImageIcon logo = new ImageIcon("C:/Users/LENOVO/Pictures/logo.png");
+//            final ImageIcon button = new ImageIcon("C:/Users/LENOVO/Pictures/button.jpg");
             final int TABPADDING = 30;
             final Font HEADERFONT = new Font("Gill Sans MT", Font.BOLD, 40);
             final Font DATAFONT = new Font("Gill Sans MT", Font.PLAIN, 30);
             final Color DARKER_GRAY = new Color(40, 40, 40);
 
-            JLabel background = new JLabel(bg);
-            background.setBounds(0, 0, getWidth(), getHeight());
-            //add(background);
-
-            setLayout(new BorderLayout());
-
+            // Create a panel for the background
+            JPanel backgroundPanel = new JPanel() {
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.drawImage(bg.getImage(), 0, 0, getWidth(), getHeight(), this);
+                }
+            };
+            backgroundPanel.setLayout(new BorderLayout());
+            setContentPane(backgroundPanel);
 
             JPanel headers = new JPanel();
             headers.setLayout(new BoxLayout(headers, BoxLayout.X_AXIS));
-            headers.setBackground(Color.ORANGE);
+            headers.setOpaque(false);
             headers.setPreferredSize(new Dimension(getPreferredSize().width, 100));
             JLabel h1 = new JLabel("User ID");
             JLabel h2 = new JLabel("Name");
@@ -127,11 +129,11 @@ public class DB2 {
             h4.setFont(HEADERFONT);
             h5.setFont(HEADERFONT);
 
-            h1.setForeground(Color.BLACK);
-            h2.setForeground(Color.BLACK);
-            h3.setForeground(Color.BLACK);
-            h4.setForeground(Color.BLACK);
-            h5.setForeground(Color.BLACK);
+            h1.setForeground(Color.YELLOW);
+            h2.setForeground(Color.YELLOW);
+            h3.setForeground(Color.YELLOW);
+            h4.setForeground(Color.YELLOW);
+            h5.setForeground(Color.YELLOW);
 
             headers.add(Box.createRigidArea(new Dimension(100, 0)));
             headers.add(h1);
@@ -144,18 +146,17 @@ public class DB2 {
             headers.add(Box.createRigidArea(new Dimension(150, 0)));
             headers.add(h5);
 
-            add(headers, BorderLayout.NORTH);
+            backgroundPanel.add(headers, BorderLayout.NORTH);
 
-
-            //listModel = new DefaultListModel<>();
-            //panelList = new JList<>(listModel);
-            //panelList.setCellRenderer(new PanelListCellRenderer());
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+            mainPanel.setOpaque(false);
 
             JScrollPane scrollPane = new JScrollPane(mainPanel);
             scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-            add(scrollPane, BorderLayout.CENTER);
+            scrollPane.setOpaque(false);
+            scrollPane.getViewport().setOpaque(false);
+            backgroundPanel.add(scrollPane, BorderLayout.CENTER);
 
             for (int i = 1; i <= DB2.userIDs.size(); i++) {
                 final int index = i;
@@ -165,7 +166,7 @@ public class DB2 {
                 panel.setPreferredSize(new Dimension(1000, 200));
                 Border border = BorderFactory.createLineBorder(Color.GRAY);
                 panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(TABPADDING, TABPADDING, TABPADDING, TABPADDING), border));
-                panel.setBackground(DARKER_GRAY);
+                panel.setBackground(new Color(DARKER_GRAY.getRed(), DARKER_GRAY.getGreen(), DARKER_GRAY.getBlue(), 200));
 
                 GridBagConstraints gbc = new GridBagConstraints();
 
@@ -257,15 +258,16 @@ public class DB2 {
 
                 approve.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
+
                         String sql = "";
                         if (approve.getText().equals("Approve")) {
                             approve.setText("Refuse");
                             approve.setBackground(Color.RED);
-                            sql = "UPDATE ridingmembership SET paymentstatus = 1 WHERE Users_userId = " + DB2.userIDs.get(index - 1);
+                            sql = "UPDATE riding_membership SET paymentstatus = 1 WHERE Users_userId = " + DB2.userIDs.get(index - 1);
                         } else {
                             approve.setText("Approve");
                             approve.setBackground(Color.GREEN);
-                            sql = "UPDATE ridingmembership SET paymentstatus = 0 WHERE Users_userId = " + DB2.userIDs.get(index - 1);
+                            sql = "UPDATE riding_membership SET paymentstatus = 0 WHERE Users_userId = " + DB2.userIDs.get(index - 1);
                         }
                         l4.setBounds(950, 50, 100, 100);
                         try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
@@ -282,8 +284,9 @@ public class DB2 {
                         }
                     }
                 });
-
             }
+
+            setVisible(true);
         }
     }
 }
