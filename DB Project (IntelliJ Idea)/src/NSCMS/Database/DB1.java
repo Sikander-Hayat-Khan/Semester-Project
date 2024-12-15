@@ -4,17 +4,13 @@ import java.sql.*;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.swing.*;
 import javax.swing.border.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,7 +27,7 @@ public class DB1 {
     final static String USERNAME = "root";
     final static String PASSWORD = "Hashim#00789";
 
-    public static void main(String[] args) throws IOException {
+    public DB1() throws IOException{
         userIDs = new ArrayList<>();
         names = new ArrayList<>();
         types = new ArrayList<>();
@@ -97,14 +93,12 @@ public class DB1 {
             setLayout(new BorderLayout());
 
             final ImageIcon bg = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
-//            final ImageIcon logo = new ImageIcon("C:/Users/LENOVO/Pictures/logo.png");
-//            final ImageIcon button = new ImageIcon("C:/Users/LENOVO/Pictures/button.jpg");
             final int TABPADDING = 30;
             final Font HEADERFONT = new Font("Gill Sans MT", Font.BOLD, 40);
             final Font DATAFONT = new Font("Gill Sans MT", Font.PLAIN, 30);
             final Color DARKER_GRAY = new Color(40, 40, 40);
 
-            // Create a panel for the background
+            // Background panel
             JPanel backgroundPanel = new JPanel() {
                 @Override
                 protected void paintComponent(Graphics g) {
@@ -115,10 +109,12 @@ public class DB1 {
             backgroundPanel.setLayout(new BorderLayout());
             setContentPane(backgroundPanel);
 
+            // Headers
             JPanel headers = new JPanel();
             headers.setLayout(new BoxLayout(headers, BoxLayout.X_AXIS));
             headers.setOpaque(false);
             headers.setPreferredSize(new Dimension(getPreferredSize().width, 100));
+
             JLabel h1 = new JLabel("User ID");
             JLabel h2 = new JLabel("Name");
             JLabel h3 = new JLabel("Type");
@@ -150,6 +146,7 @@ public class DB1 {
 
             backgroundPanel.add(headers, BorderLayout.NORTH);
 
+            // Main panel
             JPanel mainPanel = new JPanel();
             mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
             mainPanel.setOpaque(false);
@@ -160,6 +157,7 @@ public class DB1 {
             scrollPane.getViewport().setOpaque(false);
             backgroundPanel.add(scrollPane, BorderLayout.CENTER);
 
+            // Populate main panel
             for (int i = 1; i <= DB1.userIDs.size(); i++) {
                 final int index = i;
 
@@ -170,125 +168,90 @@ public class DB1 {
                 panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(TABPADDING, TABPADDING, TABPADDING, TABPADDING), border));
                 panel.setBackground(new Color(DARKER_GRAY.getRed(), DARKER_GRAY.getGreen(), DARKER_GRAY.getBlue(), 200));
 
-                GridBagConstraints gbc = new GridBagConstraints();
-
                 JLabel l1 = new JLabel(DB1.userIDs.get(i - 1) + "");
                 JLabel l2 = new JLabel(DB1.names.get(i - 1));
-                JLabel l3 = new JLabel((DB1.types.get(i - 1).equals("S")) ? "Student": "Faculty");
+                JLabel l3 = new JLabel((DB1.types.get(i - 1).equals("S")) ? "Student" : "Faculty");
 
                 JButton approve = new JButton((DB1.status.get(i - 1)) ? "Refuse" : "Approve");
                 approve.setEnabled(true);
-                approve.setBackground((DB1.status.get(i - 1)) ? Color.RED: Color.GREEN);
-                approve.setFocusable(true);
+                approve.setBackground((DB1.status.get(i - 1)) ? Color.RED : Color.GREEN);
 
-                Image receipt = DB1.receipts.get(i-1);
+                Image receipt = DB1.receipts.get(i - 1);
                 JLabel l4;
                 if (receipt != null) {
                     Image resizedReceipt = receipt.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     l4 = new JLabel(new ImageIcon(resizedReceipt));
-                    l4.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mouseClicked(MouseEvent e) {
-                            JFrame receiptFrame = new JFrame("Receipt for User ID " + DB1.userIDs.get(index-1));
-                            receiptFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            Image displayReceipt;
-                            double ratio = 1;
-                            double img_width = ((BufferedImage)(receipt)).getWidth();
-                            double img_height = ((BufferedImage)(receipt)).getHeight();
-                            if (img_width > img_height) {
-                                ratio = img_height / img_width;
-                                receiptFrame.setSize(800, (int)(800.0*ratio));
-                                displayReceipt = receipt.getScaledInstance(800, (int)(800.0*ratio), Image.SCALE_SMOOTH);
-                            }
-                            else if (img_width < img_height) {
-                                ratio = img_width / img_height;
-                                receiptFrame.setSize((int)(800.0*ratio), 800);
-                                displayReceipt = receipt.getScaledInstance((int)(800.0*ratio), 800, Image.SCALE_SMOOTH);
-                            }
-                            else {
-                                receiptFrame.setSize(800, 800);
-                                displayReceipt = receipt.getScaledInstance((int)(800.0*ratio), 800, Image.SCALE_SMOOTH);
-                            }
-                            JLabel receiptLabel = new JLabel(new ImageIcon(displayReceipt));
-                            receiptFrame.add(new JScrollPane(receiptLabel));
+                } else {
+                    l4 = new JLabel("N/A");
+                }
 
-                            receiptFrame.setVisible(true);
-                        }
-                    });
-                } else l4 = new JLabel("N/A");
-
-                l1.setFont(DATAFONT);
-                l2.setFont(DATAFONT);
-                l3.setFont(DATAFONT);
-                l4.setFont(DATAFONT);
-                approve.setFont(DATAFONT);
-
-                l1.setForeground(Color.WHITE);
-                l2.setForeground(Color.WHITE);
-                l3.setForeground(Color.WHITE);
-                l4.setForeground(Color.WHITE);
-                approve.setForeground(Color.BLACK);
-
+                // Set bounds and add components
                 l1.setBounds(140, 80, 80, 50);
+                l1.setFont(new Font("calibri", Font.BOLD, 25));
+                l1.setForeground(Color.WHITE);
                 l2.setBounds(340, 80, 300, 50);
+                l2.setFont(new Font("calibri", Font.BOLD, 25));
+                l2.setForeground(Color.WHITE);
                 l3.setBounds(690, 80, 100, 50);
+                l3.setFont(new Font("calibri", Font.BOLD, 25));
+                l3.setForeground(Color.WHITE);
                 l4.setBounds(950, 50, 100, 100);
+                l4.setFont(new Font("calibri", Font.BOLD, 25));
+                l4.setForeground(Color.WHITE);
                 approve.setBounds(1210, 80, 150, 50);
 
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-                gbc.insets = new Insets(0, 120, 0, 0);
-                gbc.anchor = GridBagConstraints.WEST;
-                panel.add(l1, gbc);
-                gbc.gridx = 1;
-                gbc.anchor = GridBagConstraints.WEST;
-                panel.add(l2, gbc);
-
-                gbc.gridx = 2;
-                gbc.anchor = GridBagConstraints.WEST;
-                panel.add(l3, gbc);
-
-                gbc.gridx = 3;
-                gbc.anchor = GridBagConstraints.WEST;
-                panel.add(l4, gbc);
-
-                gbc.gridx = 4;
-                gbc.anchor = GridBagConstraints.WEST;
-                panel.add(approve, gbc);
-
+                panel.add(l1);
+                panel.add(l2);
+                panel.add(l3);
+                panel.add(l4);
+                panel.add(approve);
                 mainPanel.add(panel);
 
-                approve.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-
-                        String sql = "";
-                        if (approve.getText().equals("Approve")) {
-                            approve.setText("Refuse");
-                            approve.setBackground(Color.RED);
-                            sql = "UPDATE swimming_membership SET paymentstatus = 1 WHERE Users_userId = " + DB1.userIDs.get(index - 1);
-                        } else {
-                            approve.setText("Approve");
-                            approve.setBackground(Color.GREEN);
-                            sql = "UPDATE swimming_membership SET paymentstatus = 0 WHERE Users_userId = " + DB1.userIDs.get(index - 1);
+                approve.addActionListener(e -> {
+                    String sql = "";
+                    if (approve.getText().equals("Approve")) {
+                        approve.setText("Refuse");
+                        approve.setBackground(Color.RED);
+                        sql = "UPDATE swimming_membership SET paymentstatus = 1 WHERE Users_userId = " + DB1.userIDs.get(index - 1);
+                    } else {
+                        approve.setText("Approve");
+                        approve.setBackground(Color.GREEN);
+                        sql = "UPDATE swimming_membership SET paymentstatus = 0 WHERE Users_userId = " + DB1.userIDs.get(index - 1);
+                    }
+                    try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
+                        try (Statement statement = connection.createStatement()) {
+                            statement.executeUpdate(sql);
+                            DB1.status.set(index - 1, !DB1.status.get(index - 1));
                         }
-                        l4.setBounds(950, 50, 100, 100);
-                        try (Connection connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD)) {
-                            try {
-                                java.sql.Statement statement = connection.createStatement();
-                                statement.executeUpdate(sql);
-                                statement.close();
-                                DB1.status.set(index - 1, !DB1.status.get(index - 1));
-                            } catch (SQLException e1) {
-                                e1.printStackTrace();
-                            }
-                        } catch (SQLException e1) {
-                            e1.printStackTrace();
-                        }
+                    } catch (SQLException e1) {
+                        e1.printStackTrace();
                     }
                 });
             }
+            ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
+
+            // Back button
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setOpaque(false);
+            bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+            JButton backButton = new JButton("Back");
+            backButton.setFont(new Font("Arial", Font.BOLD, 25));
+            backButton.setForeground(Color.BLACK);
+            backButton.setIcon(buttonBackground);
+            backButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            backButton.setVerticalTextPosition(SwingConstants.CENTER);
+            backButton.setBorder(new LineBorder(Color.ORANGE, 3));
+            backButton.addActionListener(e -> {
+                new DatabaseMainPortal();
+                dispose(); // Close the current window
+            });
+
+            bottomPanel.add(backButton);
+            backgroundPanel.add(bottomPanel, BorderLayout.SOUTH);
 
             setVisible(true);
         }
+
     }
 }

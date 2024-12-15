@@ -127,7 +127,7 @@ class sentryLoginPage
                         if(!idTf.getText().trim().isEmpty() && !passwordTf.getText().trim().isEmpty()){
                             id=Integer.parseInt(idTf.getText());
                             String enteredPassword = passwordTf.getText();
-                            final String DB_URL = "jdbc:mysql://localhost:3306/";
+                            final String DB_URL = "jdbc:mysql://localhost:3306/project";
                             final String USERNAME = "root";
                             final String PASSWORD = "Hashim#00789";
                             int paymentstatus=0;

@@ -2,19 +2,14 @@ package NSCMS.Database;
 
 import java.sql.*;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-import javax.imageio.plugins.jpeg.JPEGHuffmanTable;
 import javax.swing.*;
 import javax.swing.border.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -31,7 +26,7 @@ public class DB3 {
     final static String USERNAME = "root";
     final static String PASSWORD = "Hashim#00789";
 
-    public static void main(String[] args) throws IOException {
+    public DB3 () throws IOException {
         userIDs = new ArrayList<>();
         names = new ArrayList<>();
         types = new ArrayList<>();
@@ -95,8 +90,6 @@ public class DB3 {
             setLayout(new BorderLayout());
 
             final ImageIcon bg = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
-//            final ImageIcon logo = new ImageIcon("C:/Users/LENOVO/Pictures/logo.png");
-//            final ImageIcon button = new ImageIcon("C:/Users/LENOVO/Pictures/button.jpg");
             final int TABPADDING = 30;
             final Font HEADERFONT = new Font("Gill Sans MT", Font.BOLD, 40);
             final Font DATAFONT = new Font("Gill Sans MT", Font.PLAIN, 30);
@@ -228,9 +221,17 @@ public class DB3 {
                 approve.setForeground(Color.BLACK);
 
                 l1.setBounds(140, 80, 80, 50);
+                l1.setFont(new Font("calibri", Font.BOLD, 25));
+                l1.setForeground(Color.WHITE);
                 l2.setBounds(340, 80, 300, 50);
+                l2.setFont(new Font("calibri", Font.BOLD, 25));
+                l2.setForeground(Color.WHITE);
                 l3.setBounds(690, 80, 100, 50);
+                l3.setFont(new Font("calibri", Font.BOLD, 25));
+                l3.setForeground(Color.WHITE);
                 l4.setBounds(950, 50, 100, 100);
+                l4.setFont(new Font("calibri", Font.BOLD, 25));
+                l4.setForeground(Color.WHITE);
                 approve.setBounds(1210, 80, 150, 50);
 
                 gbc.gridx = 0;
@@ -285,6 +286,26 @@ public class DB3 {
                     }
                 });
             }
+            ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
+
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setOpaque(false);
+            bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+            JButton backButton = new JButton("Back");
+            backButton.setFont(new Font("Arial", Font.BOLD, 25));
+            backButton.setForeground(Color.BLACK);
+            backButton.setIcon(buttonBackground);
+            backButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            backButton.setVerticalTextPosition(SwingConstants.CENTER);
+            backButton.setBorder(new LineBorder(Color.ORANGE, 3));
+            backButton.addActionListener(e -> {
+                new DatabaseMainPortal();
+                dispose(); // Close the current window
+            });
+
+            bottomPanel.add(backButton);
+            backgroundPanel.add(bottomPanel, BorderLayout.SOUTH);
 
             setVisible(true);
         }

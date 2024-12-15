@@ -31,7 +31,7 @@ public class DB2 {
     final static String USERNAME = "root";
     final static String PASSWORD = "Hashim#00789";
 
-    public static void main(String[] args) throws IOException {
+    public DB2 () throws IOException {
         userIDs = new ArrayList<>();
         names = new ArrayList<>();
         types = new ArrayList<>();
@@ -215,10 +215,18 @@ public class DB2 {
                     });
                 } else l4 = new JLabel("N/A");
 
-                l1.setFont(DATAFONT);
-                l2.setFont(DATAFONT);
-                l3.setFont(DATAFONT);
-                l4.setFont(DATAFONT);
+                l1.setBounds(140, 80, 80, 50);
+                l1.setFont(new Font("calibri", Font.BOLD, 25));
+                l1.setForeground(Color.WHITE);
+                l2.setBounds(340, 80, 300, 50);
+                l2.setFont(new Font("calibri", Font.BOLD, 25));
+                l2.setForeground(Color.WHITE);
+                l3.setBounds(690, 80, 100, 50);
+                l3.setFont(new Font("calibri", Font.BOLD, 25));
+                l3.setForeground(Color.WHITE);
+                l4.setBounds(950, 50, 100, 100);
+                l4.setFont(new Font("calibri", Font.BOLD, 25));
+                l4.setForeground(Color.WHITE);
                 approve.setFont(DATAFONT);
 
                 l1.setForeground(Color.WHITE);
@@ -285,6 +293,28 @@ public class DB2 {
                     }
                 });
             }
+
+            ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
+
+            // Back button
+            JPanel bottomPanel = new JPanel();
+            bottomPanel.setOpaque(false);
+            bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+            JButton backButton = new JButton("Back");
+            backButton.setFont(new Font("Arial", Font.BOLD, 25));
+            backButton.setForeground(Color.BLACK);
+            backButton.setIcon(buttonBackground);
+            backButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            backButton.setVerticalTextPosition(SwingConstants.CENTER);
+            backButton.setBorder(new LineBorder(Color.ORANGE, 3));
+            backButton.addActionListener(e -> {
+                new DatabaseMainPortal();
+                dispose(); // Close the current window
+            });
+
+            bottomPanel.add(backButton);
+            backgroundPanel.add(bottomPanel, BorderLayout.SOUTH);
 
             setVisible(true);
         }
