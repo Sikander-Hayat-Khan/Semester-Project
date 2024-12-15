@@ -1,14 +1,14 @@
 package NSCMS.ApplicationInterface.ui;
 
 import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
 
 public class MainPortal extends JFrame {
-    private JPanel mainPanel, contentPanel;
-    private GradientButton loginButton, signupButton;
-    private JLabel nustLogo;
+    private final JPanel mainPanel;
 
     public MainPortal() {
         setTitle("MAIN MENU");
@@ -16,43 +16,49 @@ public class MainPortal extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(800, 600));
 
-        mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(new Color(53, 53, 53));
-
-        contentPanel = new JPanel(new GridBagLayout());
-        contentPanel.setBackground(new Color(255, 255, 255));
-//        contentPanel.setBorder(BorderFactory.createLineBorder(new Color(136, 0, 0), 1));
-        contentPanel.setBorder(new RoundedBorder(100));
+        mainPanel = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    Image backgroundImage = ImageIO.read(new File("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png"));
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    setBackground(new Color(53, 53, 53)); // Fallback to grey if image fails to load
+                }
+            }
+        };
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
         // NUST Logo
-        ImageIcon nustIcon = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB project\\Assets\\NUST_Logo-removebg-preview.png");
+        ImageIcon nustIcon = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\NUST_Logo-removebg-preview.png");
         Image scaledImage = nustIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-        nustLogo = new JLabel(new ImageIcon(scaledImage));
+        JLabel nustLogo = new JLabel(new ImageIcon(scaledImage));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 3;
         gbc.anchor = GridBagConstraints.CENTER;
-        contentPanel.add(nustLogo, gbc);
+        mainPanel.add(nustLogo, gbc);
+
+        // Reset gridwidth for buttons
+        gbc.gridwidth = 1;
 
         // Login Button
         gbc.gridy = 1;
-        gbc.gridwidth = 1;
+        gbc.gridx = 0;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        loginButton = new GradientButton("LOGIN");
-        loginButton.addActionListener(e -> openLoginPage());
-        contentPanel.add(loginButton, gbc);
+        GradientButton loginButton = new GradientButton("Login");
+        loginButton.addActionListener(e -> openLoginWindow());
+        mainPanel.add(loginButton, gbc);
 
         // Signup Button
         gbc.gridx = 1;
-        signupButton = new GradientButton("SIGN UP");
-        signupButton.addActionListener(e -> openSignupPage());
-        contentPanel.add(signupButton, gbc);
-
-        // Add content panel to main panel
-        mainPanel.add(contentPanel);
+        GradientButton signupButton = new GradientButton("Signup");
+        signupButton.addActionListener(e -> openSignupWindow());
+        mainPanel.add(signupButton, gbc);
 
         // Add main panel to frame
         add(mainPanel);
@@ -61,11 +67,6 @@ public class MainPortal extends JFrame {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                // Recalculate the size and position of the content panel
-                Dimension size = getContentPane().getSize();
-                int contentPanelWidth = Math.min(600, size.width - 40);
-                int contentPanelHeight = Math.min(400, size.height - 40);
-                contentPanel.setPreferredSize(new Dimension(contentPanelWidth, contentPanelHeight));
                 mainPanel.revalidate();
             }
         });
@@ -73,12 +74,12 @@ public class MainPortal extends JFrame {
         setVisible(true);
     }
 
-    private void openLoginPage() {
+    private void openLoginWindow() {
         new LoginPage();
         this.dispose();
     }
 
-    private void openSignupPage() {
+    private void openSignupWindow() {
         new SignupPage();
         this.dispose();
     }
@@ -126,7 +127,7 @@ public class MainPortal extends JFrame {
             );
 
             g2d.setPaint(gp);
-            g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 10, 10));
+            g2d.fillRect(0, 0, width, height);
 
             g2d.dispose();
 
@@ -134,3 +135,4 @@ public class MainPortal extends JFrame {
         }
     }
 }
+

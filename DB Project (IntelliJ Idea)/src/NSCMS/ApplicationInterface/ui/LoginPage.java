@@ -1,13 +1,15 @@
 package NSCMS.ApplicationInterface.ui;
+
 import javax.swing.*;
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 
 public class LoginPage extends JFrame {
     private final JPanel mainPanel;
-    private final JPanel loginPanel;
     private final JTextField cmsIdField;
     private final JPasswordField passwordField;
     private final JLabel statusLabel;
@@ -20,66 +22,91 @@ public class LoginPage extends JFrame {
     public LoginPage() {
         setTitle("LOGIN WINDOW");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH); // Set the window to maximized state
-        setMinimumSize(new Dimension(600, 400)); // Set a minimum size to maintain layout
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setMinimumSize(new Dimension(600, 400));
 
-        mainPanel = new JPanel(new GridBagLayout());
-        mainPanel.setBackground(new Color(53, 53, 53));
-
-        loginPanel = new JPanel(new GridBagLayout());
-        loginPanel.setBackground(new Color(255, 255, 255));
-//        loginPanel.setBorder(BorderFactory.createLineBorder(new Color(182, 126, 148), 1));
-        loginPanel.setBorder(new RoundedBorder(100));
+        mainPanel = new JPanel(new GridBagLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    Image backgroundImage = ImageIO.read(new File("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png"));
+                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    setBackground(new Color(53, 53, 53)); // Fallback to grey if image fails to load
+                }
+            }
+        };
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // CMS ID Label and TextField
+        // Logo
+        ImageIcon logoIcon = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\NUST_Logo-removebg-preview.png");
+        Image scaledImage = logoIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        JLabel logoLabel = new JLabel(new ImageIcon(scaledImage));
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(logoLabel, gbc);
+
+        // Reset gridwidth and update gridy for other components
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+
+        // CMS ID Label and TextField
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         gbc.anchor = GridBagConstraints.WEST;
-        loginPanel.add(new JLabel("CMS ID:"), gbc);
+        JLabel cmsIdLabel = new JLabel("CMS ID:");
+        cmsIdLabel.setFont(new Font("calibri", Font.BOLD, 20));
+        cmsIdLabel.setForeground(Color.WHITE);
+        mainPanel.add(cmsIdLabel, gbc);
 
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        cmsIdField = new JTextField(15);
-        loginPanel.add(cmsIdField, gbc);
+        cmsIdField = new JTextField(25);
+        cmsIdField.setPreferredSize(new Dimension(200, 30));
+        mainPanel.add(cmsIdField, gbc);
 
         // Password Label and TextField
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.fill = GridBagConstraints.NONE;
-        loginPanel.add(new JLabel("PASSWORD:"), gbc);
+        JLabel passwordLabel = new JLabel("PASSWORD:");
+        passwordLabel.setFont(new Font("calibri", Font.BOLD, 20));
+        passwordLabel.setForeground(Color.WHITE);
+        mainPanel.add(passwordLabel, gbc);
 
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        passwordField = new JPasswordField(15);
-        loginPanel.add(passwordField, gbc);
+        passwordField = new JPasswordField(25);
+        passwordField.setPreferredSize(new Dimension(200, 30));
+        mainPanel.add(passwordField, gbc);
 
         // Login Button
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         gbc.gridwidth = 2;
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         GradientButton loginButton = new GradientButton("LOGIN");
         loginButton.addActionListener(e -> performLogin());
-        loginPanel.add(loginButton, gbc);
+        mainPanel.add(loginButton, gbc);
 
         // Back Button
-        gbc.gridy = 3;
+        gbc.gridy = 4;
         GradientButton backButton = new GradientButton("BACK");
         backButton.addActionListener(e -> goBack());
-        loginPanel.add(backButton, gbc);
+        mainPanel.add(backButton, gbc);
 
         // Status Label
-        gbc.gridy = 4;
+        gbc.gridy = 5;
         statusLabel = new JLabel(" ");
         statusLabel.setForeground(Color.RED);
-        loginPanel.add(statusLabel, gbc);
-
-        // Add login panel to main panel
-        mainPanel.add(loginPanel);
+        mainPanel.add(statusLabel, gbc);
 
         // Add main panel to frame
         add(mainPanel);
@@ -96,11 +123,6 @@ public class LoginPage extends JFrame {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                // Recalculate the size and position of the login panel
-                Dimension size = getContentPane().getSize();
-                int loginPanelWidth = Math.min(400, size.width - 40);
-                int loginPanelHeight = Math.min(300, size.height - 40);
-                loginPanel.setPreferredSize(new Dimension(loginPanelWidth, loginPanelHeight));
                 mainPanel.revalidate();
             }
         });
@@ -198,11 +220,16 @@ public class LoginPage extends JFrame {
             );
 
             g2d.setPaint(gp);
-            g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, 10, 10));
+            g2d.fillRect(0, 0, width, height);
 
             g2d.dispose();
 
             super.paintComponent(g);
         }
     }
+
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> new LoginPage());
+//    }
 }
+

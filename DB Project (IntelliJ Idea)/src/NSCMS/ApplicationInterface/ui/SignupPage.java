@@ -109,93 +109,92 @@ public class SignupPage
         designationTf.setBackground(Color.ORANGE);
         designationTf.setForeground(Color.BLACK);
         stdClassLabel = new JLabel("ENTER CLASS");
-        stdClassLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        stdClassLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         stdClassLabel.setForeground(Color.ORANGE);
         stdClassLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
         fclOfficeLabel = new JLabel("ENTER OFFICE");
-        fclOfficeLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        fclOfficeLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         fclOfficeLabel.setForeground(Color.ORANGE);
         fclOfficeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        designationLabel = new JLabel("ENTER DESIGNATION");
-        designationLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        designationLabel = new JLabel("DESIGNATION");
+        designationLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         designationLabel.setForeground(Color.ORANGE);
         designationLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 
         idLabel = new JLabel("ENTER YOUR CMS");
-        idLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        idLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         idLabel.setForeground(Color.ORANGE);
         idLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         nameLabel = new JLabel("ENTER YOUR NAME");
-        nameLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        nameLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         nameLabel.setForeground(Color.ORANGE);
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         schoolLabel = new JLabel("ENTER SCHOOL");
-        schoolLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        schoolLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         schoolLabel.setForeground(Color.ORANGE);
         schoolLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         genderLabel = new JLabel("GENDER");
-        genderLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        genderLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         genderLabel.setForeground(Color.ORANGE);
         genderLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         maleLabel = new JLabel("MALE");
-        maleLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        maleLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         maleLabel.setForeground(Color.ORANGE);
         maleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         femaleLabel = new JLabel("FEMALE");
-        femaleLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        femaleLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         femaleLabel.setForeground(Color.ORANGE);
         femaleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         studentLabel = new JLabel("STUDENT");
-        studentLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        studentLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         studentLabel.setForeground(Color.ORANGE);
         studentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         facultyLabel = new JLabel("FACULTY");
-        facultyLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        facultyLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         facultyLabel.setForeground(Color.ORANGE);
         facultyLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         userTypeLabel = new JLabel("USER TYPE");
-        userTypeLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        userTypeLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         userTypeLabel.setForeground(Color.ORANGE);
         userTypeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         phone1JLabel = new JLabel("FIRST CONTACT NUMBER");
-        phone1JLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        phone1JLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         phone1JLabel.setForeground(Color.ORANGE);
-        phone1JLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        phone1JLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
         phone2JLabel = new JLabel("SECOND CONTACT NUMBER");
-        phone2JLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        phone2JLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         phone2JLabel.setForeground(Color.ORANGE);
-        phone2JLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        phone2JLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
         phone3JLabel = new JLabel("THIRD CONTACT NUMBER");
-        phone3JLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        phone3JLabel.setFont(new Font("Calibri", Font.BOLD, 17));
         phone3JLabel.setForeground(Color.ORANGE);
-        phone3JLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        phone3JLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
         emailLabel = new JLabel("ENTER EMAIL");
-        emailLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        emailLabel.setFont(new Font("Calibri", Font.BOLD, 18));
         emailLabel.setForeground(Color.ORANGE);
         emailLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         passwordLabel = new JLabel("ENTER PASSWORD");
-        passwordLabel.setFont(new Font("Bernard MT Condensed", Font.BOLD, 18));
+        passwordLabel.setFont(new Font("Calibri", Font.BOLD, 18));
         passwordLabel.setForeground(Color.ORANGE);
         passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
         backButton = new JButton("BACK");
-        backButton.setFont(new Font("Arial", Font.BOLD, 25));
+        backButton.setFont(new Font("Calibri", Font.BOLD, 25));
         backButton.setForeground(Color.BLACK);
         backButton.setIcon(buttonBackground);
         backButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -223,7 +222,7 @@ public class SignupPage
         designationLabel.setVisible(false);
         designationTf.setVisible(false);
         registerButton = new JButton("REGISTER");
-        registerButton.setFont(new Font("Arial", Font.BOLD, 25));
+        registerButton.setFont(new Font("Calibri", Font.BOLD, 25));
         registerButton.setForeground(Color.BLACK);
         registerButton.setIcon(buttonBackground);
         registerButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -297,13 +296,13 @@ public class SignupPage
         });
 
         maleButton = new JRadioButton();
-        maleButton.setFont(new Font("Arial", Font.BOLD, 16));
+        maleButton.setFont(new Font("Calibri", Font.BOLD, 16));
         maleButton.setForeground(Color.BLACK);
         maleButton.setHorizontalTextPosition(SwingConstants.CENTER);
         maleButton.setVerticalTextPosition(SwingConstants.CENTER);
 
         femaleButton = new JRadioButton();
-        femaleButton.setFont(new Font("Arial", Font.BOLD, 16));
+        femaleButton.setFont(new Font("Calibri", Font.BOLD, 16));
         femaleButton.setForeground(Color.BLACK);
         femaleButton.setHorizontalTextPosition(SwingConstants.CENTER);
         femaleButton.setVerticalTextPosition(SwingConstants.CENTER);
@@ -326,13 +325,13 @@ public class SignupPage
         });
 
         studentButton = new JRadioButton();
-        studentButton.setFont(new Font("Arial", Font.BOLD, 16));
+        studentButton.setFont(new Font("Calibri", Font.BOLD, 16));
         studentButton.setForeground(Color.BLACK);
         studentButton.setHorizontalTextPosition(SwingConstants.CENTER);
         studentButton.setVerticalTextPosition(SwingConstants.CENTER);
 
         facultyButton = new JRadioButton();
-        facultyButton.setFont(new Font("Arial", Font.BOLD, 16));
+        facultyButton.setFont(new Font("Calibri", Font.BOLD, 16));
         facultyButton.setForeground(Color.BLACK);
         facultyButton.setHorizontalTextPosition(SwingConstants.CENTER);
         facultyButton.setVerticalTextPosition(SwingConstants.CENTER);
@@ -402,13 +401,13 @@ public class SignupPage
                 femaleButton.setBounds(frame.getWidth() / 2 + 135, frame.getHeight() / 2 - 200, 25, 25);
 
                 phone1JLabel.setBounds(frame.getWidth() / 2 - 350, frame.getHeight() / 2 - 190, 260, 90);
-                phone1Tf.setBounds(frame.getWidth() / 2 - 130, frame.getHeight() / 2 - 165, 550, 30);
+                phone1Tf.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() / 2 - 165, 550, 30);
 
                 phone2JLabel.setBounds(frame.getWidth() / 2 - 350, frame.getHeight() / 2 - 150, 260, 90);
-                phone2Tf.setBounds(frame.getWidth() / 2 - 120, frame.getHeight() / 2 - 125, 550, 30);
+                phone2Tf.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() / 2 - 125, 550, 30);
 
                 phone3JLabel.setBounds(frame.getWidth() / 2 - 350, frame.getHeight() / 2 - 110, 260, 90);
-                phone3Tf.setBounds(frame.getWidth() / 2 - 120, frame.getHeight() / 2 - 85, 550, 30);
+                phone3Tf.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() / 2 - 85, 550, 30);
 
                 emailLabel.setBounds(frame.getWidth() / 2 - 350, frame.getHeight() / 2 - 70, 260, 90);
                 emailTf.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() / 2 - 45, 550, 30);
@@ -431,7 +430,7 @@ public class SignupPage
                 facultyOfficeTf.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() / 2 + 100, 550, 30);
 
                 designationLabel.setBounds(frame.getWidth() / 2 - 350, frame.getHeight() / 2 + 100, 260, 90);
-                designationTf.setBounds(frame.getWidth() / 2 - 140, frame.getHeight() / 2 + 135, 550, 30);
+                designationTf.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() / 2 + 135, 550, 30);
 
                 backButton.setBounds(frame.getWidth() / 2 - 450, frame.getHeight() / 2 + 265, 260, 90);
                 registerButton.setBounds(frame.getWidth() / 2 + 150, frame.getHeight() / 2 + 265, 260, 90);
