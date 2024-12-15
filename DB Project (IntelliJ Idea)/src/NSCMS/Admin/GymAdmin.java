@@ -96,7 +96,8 @@ class gentryLoginPage
 
             public void mouseClicked(MouseEvent e)
             {
-                new MainPortal();
+                new AdminMainPortal();
+                frame.dispose();
             }
         });
 
@@ -224,17 +225,11 @@ class gentryLoginPage
         frame.add(idTf);
         frame.add(passwordLabel);
         frame.add(passwordTf);
-        //frame.add(backButton);
+        frame.add(backButton);
         frame.add(loginButton);
         frame.add(nustLogo);
         frame.add(pageBackground);
 
         frame.setVisible(true);
-    }
-}
-
-public class GymAdmin{
-    public static void main(String[] args) {
-        new gentryLoginPage();
     }
 }

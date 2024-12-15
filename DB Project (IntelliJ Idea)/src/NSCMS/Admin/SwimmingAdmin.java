@@ -96,6 +96,8 @@ class sentryLoginPage
 
             public void mouseClicked(MouseEvent e)
             {
+                new AdminMainPortal();
+                frame.dispose();
             }
         });
 
@@ -221,17 +223,11 @@ class sentryLoginPage
         frame.add(idTf);
         frame.add(passwordLabel);
         frame.add(passwordTf);
-        //frame.add(backButton);
+        frame.add(backButton);
         frame.add(loginButton);
         frame.add(nustLogo);
         frame.add(pageBackground);
 
         frame.setVisible(true);
-    }
-}
-
-public class SwimmingAdmin{
-    public static void main(String[] args) {
-        new sentryLoginPage();
     }
 }

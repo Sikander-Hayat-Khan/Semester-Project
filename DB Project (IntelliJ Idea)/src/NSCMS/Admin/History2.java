@@ -10,7 +10,6 @@ import javax.swing.border.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 import java.awt.event.ActionListener;
 
 public class History2 {
@@ -45,8 +44,6 @@ public class History2 {
                 while (rs.next()) {
                     facility.add(rs.getString("FacilityUsed"));
                     time.add(rs.getTimestamp("time"));
-                    //names.add(rs.getString(2));
-
                 }
 
             } catch (SQLException e1) {
@@ -63,67 +60,77 @@ public class History2 {
             new admin2();
         });
     }
-
-    class eventhandler implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-
-        }
-
-    }
 }
 
 class admin2 extends JFrame {
     private JList<JPanel> panelList;
     private DefaultListModel<JPanel> listModel;
-    JLabel historybackground;
-    ImageIcon background = new ImageIcon("E:\\Semester 2\\Databse Systems\\Project\\WhatsApp Image 2024-05-11 at 21.25.49_970c1e6c.jpg");
-
-
+    private JLabel backgroundLabel;
+    private ImageIcon backgroundImage = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\AccessHistoryBG2.png");
 
     public admin2() {
-        historybackground = new JLabel(background);
-        add(historybackground);
         setTitle("Admin Dashboard");
         setExtendedState(MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
+
+        // Create a layered pane to hold background and content
+        JLayeredPane layeredPane = new JLayeredPane();
+        setContentPane(layeredPane);
+
+        // Set up background
+        backgroundLabel = new JLabel(backgroundImage);
+        backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+        layeredPane.add(backgroundLabel, JLayeredPane.DEFAULT_LAYER);
+
+        // Set up content panel
+        JPanel contentPanel = new JPanel(new BorderLayout());
+        contentPanel.setOpaque(false);
+        contentPanel.setBounds(0, 0, getWidth(), getHeight());
+        layeredPane.add(contentPanel, JLayeredPane.PALETTE_LAYER);
 
         listModel = new DefaultListModel<>();
         panelList = new JList<>(listModel);
         panelList.setCellRenderer(new PanelListCellRenderer());
+        panelList.setOpaque(false);
 
-        add(new JScrollPane(panelList), BorderLayout.CENTER);
+        JScrollPane scrollPane = new JScrollPane(panelList);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
 
-        final int PADDING = 30;
+        final int PADDING = 10;
         // Add panels to list model
         for (int i = 1; i <= History2.facility.size(); i++) {
             JPanel panel = new JPanel();
             panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-            panel.setPreferredSize(new Dimension(1000, 200));
-            Border border = BorderFactory.createLineBorder(Color.BLACK);
+            panel.setPreferredSize(new Dimension(getWidth() - 100, 100));
+            Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
             panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING), border));
-            panel.setBackground(Color.CYAN);
+            panel.setBackground(new Color(255, 255, 255, 200)); // Semi-transparent white
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            String timestampString = formatter.format(new Date(History2.time.get(i-1).getTime()));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String timestampString = formatter.format(History2.time.get(i - 1));
 
             JLabel l1 = new JLabel(timestampString);
             JLabel l2 = new JLabel(History2.facility.get(i - 1));
-            l1.setFont(new Font("Arial", Font.PLAIN, 20));
-            l2.setFont(new Font("Arial", Font.PLAIN, 20));
-            panel.add(Box.createRigidArea(new Dimension(100, 0))); // Add space between l1 and l2
+            l1.setFont(new Font("Arial", Font.BOLD, 16));
+            l2.setFont(new Font("Arial", Font.BOLD, 16));
+            panel.add(Box.createRigidArea(new Dimension(50, 0)));
             panel.add(l1);
-            panel.add(Box.createRigidArea(new Dimension(100, 0))); // Add space between l1 and l2
+            panel.add(Box.createRigidArea(new Dimension(50, 0)));
             panel.add(l2);
-            panel.add(Box.createRigidArea(new Dimension(100, 0))); // Add space between l1 and l2
+            panel.add(Box.createHorizontalGlue());
             listModel.addElement(panel);
-
         }
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
+        // Create and set up the back button
         JButton backButton = new JButton("Back");
-        backButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        backButton.setPreferredSize(new Dimension(100, 50));
+        backButton.setFont(new Font("Arial", Font.BOLD, 25));
+        backButton.setForeground(Color.BLACK);
+        backButton.setIcon(buttonBackground);
+        backButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        backButton.setVerticalTextPosition(SwingConstants.CENTER);
+        backButton.setBorder(new LineBorder(Color.ORANGE, 3));
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -131,12 +138,19 @@ class admin2 extends JFrame {
                 new Dashboard(History2.id); // Open the main frame
             }
         });
+        layeredPane.add(backButton, JLayeredPane.DRAG_LAYER); // Add to a higher layer
 
-        // Add back button to frame
-        add(backButton, BorderLayout.SOUTH);
+        // Ensure the background image resizes with the frame
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                backgroundLabel.setBounds(0, 0, getWidth(), getHeight());
+                contentPanel.setBounds(0, 0, getWidth(), getHeight());
+                backButton.setBounds(20, getHeight() - 80, 100, 40); // Update button position
+            }
+        });
 
+        setVisible(true);
     }
-
 
     private class PanelListCellRenderer implements ListCellRenderer<JPanel> {
         @Override
@@ -145,3 +159,4 @@ class admin2 extends JFrame {
         }
     }
 }
+

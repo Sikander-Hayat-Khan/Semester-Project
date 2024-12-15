@@ -94,9 +94,9 @@ class rentryLoginPage
                 backButton.setSize(260, 90);
             }
 
-            public void mouseClicked(MouseEvent e)
-            {
-                new MainPortal();
+            public void mouseClicked(MouseEvent e) {
+                new AdminMainPortal();
+                frame.dispose();
             }
         });
 
@@ -223,17 +223,11 @@ class rentryLoginPage
         frame.add(idTf);
         frame.add(passwordLabel);
         frame.add(passwordTf);
-        //frame.add(backButton);
+        frame.add(backButton);
         frame.add(loginButton);
         frame.add(nustLogo);
         frame.add(pageBackground);
 
         frame.setVisible(true);
-    }
-}
-
-public class RidingAdmin {
-    public static void main(String[] args) {
-        new rentryLoginPage();
     }
 }
