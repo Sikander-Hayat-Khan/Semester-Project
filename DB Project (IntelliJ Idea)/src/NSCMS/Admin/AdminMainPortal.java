@@ -1,5 +1,7 @@
 package NSCMS.Admin;
 
+import NSCMS.ApplicationInterface.Main.App;
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -66,6 +68,18 @@ public class AdminMainPortal extends JFrame {
         gymAdminButton.addActionListener(e -> openGymAdminLogin());
         mainPanel.add(gymAdminButton, gbc);
 
+        // Back Button
+        gbc.gridy = 2; // Move to the next row
+        gbc.gridx = 1; // Center column
+        gbc.gridwidth = 1; // Single column
+        gbc.anchor = GridBagConstraints.CENTER; // Center alignment
+        GradientButton backButton = new GradientButton("Back");
+        backButton.addActionListener(e -> {
+            new App();
+            dispose(); // Close the current frame
+        });
+        mainPanel.add(backButton, gbc);
+
         // Add main panel to frame
         add(mainPanel);
 
@@ -95,29 +109,45 @@ public class AdminMainPortal extends JFrame {
         this.dispose();
     }
 
-    private static class GradientButton extends JButton {
+    private class GradientButton extends JButton {
         private boolean isHovered = false;
+        private Image backgroundImage;
+        private final int NORMAL_WIDTH = 250;
+        private final int NORMAL_HEIGHT = 50;
+        private final int HOVER_INCREASE = 10;
 
         public GradientButton(String text) {
             super(text);
             setContentAreaFilled(false);
             setFocusPainted(false);
-            setBorderPainted(false);
+            setBorderPainted(true);
             setOpaque(false);
-            setForeground(Color.WHITE);
-            setFont(new Font("Arial", Font.BOLD, 16));
+            setForeground(Color.BLACK);
+            setFont(new Font("Arial", Font.BOLD, 25));
             setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            // Set yellow border
+            setBorder(BorderFactory.createLineBorder(Color.YELLOW, 2));
+
+            // Load the background image
+            try {
+                backgroundImage = ImageIO.read(new File("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     isHovered = true;
+                    setSize(NORMAL_WIDTH + HOVER_INCREASE, NORMAL_HEIGHT + HOVER_INCREASE);
                     repaint();
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
                     isHovered = false;
+                    setSize(NORMAL_WIDTH, NORMAL_HEIGHT);
                     repaint();
                 }
             });
@@ -131,18 +161,40 @@ public class AdminMainPortal extends JFrame {
             int width = getWidth();
             int height = getHeight();
 
-            // Create gradient paint
-            GradientPaint gp = new GradientPaint(
-                    0, 0, isHovered ? new Color(100, 180, 255) : new Color(70, 130, 180),
-                    width, height, isHovered ? new Color(70, 130, 180) : new Color(100, 180, 255)
-            );
+            // Draw background image if available, otherwise use a semi-transparent black background
+            if (backgroundImage != null) {
+                g2d.drawImage(backgroundImage, 0, 0, width, height, null);
+            } else {
+                // Semi-transparent dark background
+                g2d.setColor(new Color(0, 0, 0, 180));
+                g2d.fillRect(0, 0, width, height);
+            }
 
-            g2d.setPaint(gp);
-            g2d.fillRect(0, 0, width, height);
+            // Add a subtle hover effect
+            if (isHovered) {
+                g2d.setColor(new Color(255, 255, 255, 30));
+                g2d.fillRect(0, 0, width, height);
+            }
 
             g2d.dispose();
 
             super.paintComponent(g);
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            // Set the button's preferred size
+            return new Dimension(NORMAL_WIDTH, NORMAL_HEIGHT);
+        }
+
+        @Override
+        public Dimension getMinimumSize() {
+            return getPreferredSize();
+        }
+
+        @Override
+        public Dimension getMaximumSize() {
+            return getPreferredSize();
         }
     }
 
@@ -150,4 +202,3 @@ public class AdminMainPortal extends JFrame {
         new AdminMainPortal();
     }
 }
-
