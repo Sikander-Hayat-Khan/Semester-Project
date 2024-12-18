@@ -1,5 +1,7 @@
 package NSCMS.Database;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -7,10 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -175,15 +173,50 @@ public class DB1 {
                 JButton approve = new JButton((DB1.status.get(i - 1)) ? "Refuse" : "Approve");
                 approve.setEnabled(true);
                 approve.setBackground((DB1.status.get(i - 1)) ? Color.RED : Color.GREEN);
+                approve.setFocusable(false);
 
                 Image receipt = DB1.receipts.get(i - 1);
                 JLabel l4;
                 if (receipt != null) {
                     Image resizedReceipt = receipt.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
                     l4 = new JLabel(new ImageIcon(resizedReceipt));
-                } else {
-                    l4 = new JLabel("N/A");
-                }
+                    l4.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent e) {
+                            BufferedImage receiptImage = DB1.receipts.get(index - 1);
+
+                            if (receiptImage != null) {
+                                // Calculate scaling dimensions
+                                double imgWidth = receiptImage.getWidth();
+                                double imgHeight = receiptImage.getHeight();
+                                double maxDimension = 800.0; // Max size for the new frame
+                                double widthRatio = imgWidth > imgHeight ? maxDimension / imgWidth : 1;
+                                double heightRatio = imgHeight > imgWidth ? maxDimension / imgHeight : 1;
+                                double scaleRatio = Math.min(widthRatio, heightRatio);
+
+                                int newWidth = (int) (imgWidth * scaleRatio);
+                                int newHeight = (int) (imgHeight * scaleRatio);
+
+                                // Create scaled image
+                                Image scaledImage = receiptImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+
+                                // Create a new frame for displaying the receipt
+                                JFrame receiptFrame = new JFrame("Receipt for User ID " + DB1.userIDs.get(index - 1));
+                                receiptFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                                receiptFrame.setSize(newWidth, newHeight);
+
+                                // Add the scaled receipt image to the frame
+                                JLabel receiptLabel = new JLabel(new ImageIcon(scaledImage));
+                                JScrollPane scrollPane = new JScrollPane(receiptLabel);
+                                receiptFrame.add(scrollPane);
+
+                                receiptFrame.setVisible(true);
+                            } else {
+                                JOptionPane.showMessageDialog(null, "No receipt available for this user.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    });
+                } else l4 = new JLabel("N/A");
 
                 // Set bounds and add components
                 l1.setBounds(140, 80, 80, 50);

@@ -170,7 +170,7 @@ public class DB3 {
                 JButton approve = new JButton((DB3.status.get(i - 1)) ? "Refuse" : "Approve");
                 approve.setEnabled(true);
                 approve.setBackground((DB3.status.get(i - 1)) ? Color.RED: Color.GREEN);
-                approve.setFocusable(true);
+                approve.setFocusable(false);
 
                 Image receipt = DB3.receipts.get(i-1);
                 JLabel l4;

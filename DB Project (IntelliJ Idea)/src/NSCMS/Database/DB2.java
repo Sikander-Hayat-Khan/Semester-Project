@@ -177,7 +177,7 @@ public class DB2 {
                 JButton approve = new JButton((DB2.status.get(i - 1)) ? "Refuse" : "Approve");
                 approve.setEnabled(true);
                 approve.setBackground((DB2.status.get(i - 1)) ? Color.RED: Color.GREEN);
-                approve.setFocusable(true);
+                approve.setFocusable(false);
 
                 Image receipt = DB2.receipts.get(i-1);
                 JLabel l4;
@@ -207,7 +207,7 @@ public class DB2 {
                                 receiptFrame.setSize(800, 800);
                                 displayReceipt = receipt.getScaledInstance((int)(800.0*ratio), 800, Image.SCALE_SMOOTH);
                             }
-                            JLabel receiptLabel = new JLabel(new ImageIcon(displayReceipt));
+                            JLabel receiptLabel = new JLabel(new ImageIcon());
                             receiptFrame.add(new JScrollPane(receiptLabel));
 
                             receiptFrame.setVisible(true);

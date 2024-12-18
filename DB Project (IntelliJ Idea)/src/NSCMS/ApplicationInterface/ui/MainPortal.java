@@ -1,138 +1,124 @@
 package NSCMS.ApplicationInterface.ui;
 
+import NSCMS.ApplicationInterface.Main.App;
+
 import javax.swing.*;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import javax.swing.border.LineBorder;
 
-public class MainPortal extends JFrame {
-    private final JPanel mainPanel;
+public class MainPortal {
+    private JFrame frame;
+    private JLabel menuBackground;
+    private JLabel nustLogo;
+    private JButton loginButton;
+    private JButton signupButton;
+    private JButton backButton; // New Back Button
 
     public MainPortal() {
-        setTitle("MAIN MENU");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setMinimumSize(new Dimension(800, 600));
+        frame = new JFrame("MAIN MENU");
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setSize(1200, 900);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        mainPanel = new JPanel(new GridBagLayout()) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                try {
-                    Image backgroundImage = ImageIO.read(new File("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png"));
-                    g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    setBackground(new Color(53, 53, 53)); // Fallback to grey if image fails to load
-                }
-            }
-        };
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // NUST Logo
+        ImageIcon background = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\CreatedBackground.png");
         ImageIcon nustIcon = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\NUST_Logo-removebg-preview.png");
-        Image scaledImage = nustIcon.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-        JLabel nustLogo = new JLabel(new ImageIcon(scaledImage));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        gbc.anchor = GridBagConstraints.CENTER;
-        mainPanel.add(nustLogo, gbc);
+        ImageIcon buttonBackground = new ImageIcon("D:\\SEECS\\3rd Semester\\Database Systems\\Sem Project\\zzzzZZZZ\\DB Project (IntelliJ Idea)\\src\\Assets\\ButtonBackground.png");
 
-        // Reset gridwidth for buttons
-        gbc.gridwidth = 1;
+        menuBackground = new JLabel(background);
+        nustLogo = new JLabel(nustIcon);
 
-        // Login Button
-        gbc.gridy = 1;
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        GradientButton loginButton = new GradientButton("Login");
-        loginButton.addActionListener(e -> openLoginWindow());
-        mainPanel.add(loginButton, gbc);
+        loginButton = new JButton("LOGIN");
+        loginButton.setFont(new Font("Arial", Font.BOLD, 25));
+        loginButton.setForeground(Color.BLACK);
+        loginButton.setIcon(buttonBackground);
+        loginButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        loginButton.setVerticalTextPosition(SwingConstants.CENTER);
+        loginButton.setBorder(new LineBorder(Color.ORANGE, 3));
+        loginButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                loginButton.setSize(270, 100);
+            }
 
-        // Signup Button
-        gbc.gridx = 1;
-        GradientButton signupButton = new GradientButton("Signup");
-        signupButton.addActionListener(e -> openSignupWindow());
-        mainPanel.add(signupButton, gbc);
+            public void mouseExited(MouseEvent e) {
+                loginButton.setSize(260, 90);
+            }
 
-        // Add main panel to frame
-        add(mainPanel);
-
-        // Add ComponentListener to handle window resize events
-        addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                mainPanel.revalidate();
+            public void mouseClicked(MouseEvent e) {
+                new LoginPage();
+                frame.setVisible(false);
             }
         });
 
-        setVisible(true);
+        signupButton = new JButton("SIGN UP");
+        signupButton.setFont(new Font("Arial", Font.BOLD, 25));
+        signupButton.setForeground(Color.BLACK);
+        signupButton.setIcon(buttonBackground);
+        signupButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        signupButton.setVerticalTextPosition(SwingConstants.CENTER);
+        signupButton.setBorder(new LineBorder(Color.ORANGE, 3));
+        signupButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                signupButton.setSize(270, 100);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                signupButton.setSize(260, 90);
+            }
+
+            public void mouseClicked(MouseEvent e) {
+                new SignupPage();
+                frame.setVisible(false);
+            }
+        });
+
+        // Add a back button
+        backButton = new JButton("BACK");
+        backButton.setFont(new Font("Arial", Font.BOLD, 25));
+        backButton.setForeground(Color.BLACK);
+        backButton.setIcon(buttonBackground);
+        backButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        backButton.setVerticalTextPosition(SwingConstants.CENTER);
+        backButton.setBorder(new LineBorder(Color.ORANGE, 3));
+        backButton.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                backButton.setSize(270, 100);
+            }
+
+            public void mouseExited(MouseEvent e) {
+                backButton.setSize(260, 90);
+            }
+
+            public void mouseClicked(MouseEvent e) {
+                new App();
+                frame.setVisible(false);
+            }
+        });
+
+        // Adjust components on resize
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                menuBackground.setBounds(0, 0, frame.getWidth(), frame.getHeight());
+                nustLogo.setBounds(frame.getWidth() / 2 - 250, frame.getHeight() / 2 - 250, 500, 500);
+                signupButton.setBounds(frame.getWidth() / 2 - 450, frame.getHeight() / 2 + 265, 260, 90);
+                loginButton.setBounds(frame.getWidth() / 2 + 150, frame.getHeight() / 2 + 265, 260, 90);
+                backButton.setBounds(frame.getWidth() / 2 - 150, frame.getHeight() - 150, 260, 90); // Bottom center
+            }
+        });
+
+        frame.add(signupButton);
+        frame.add(loginButton);
+        frame.add(backButton); // Add back button to the frame
+        frame.add(nustLogo);
+        frame.add(menuBackground);
+
+        frame.setVisible(true);
     }
 
-    private void openLoginWindow() {
-        new LoginPage();
-        this.dispose();
-    }
-
-    private void openSignupWindow() {
-        new SignupPage();
-        this.dispose();
-    }
-
-    private static class GradientButton extends JButton {
-        private boolean isHovered = false;
-
-        public GradientButton(String text) {
-            super(text);
-            setContentAreaFilled(false);
-            setFocusPainted(false);
-            setBorderPainted(false);
-            setOpaque(false);
-            setForeground(Color.WHITE);
-            setFont(new Font("Arial", Font.BOLD, 16));
-            setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    isHovered = true;
-                    repaint();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    isHovered = false;
-                    repaint();
-                }
-            });
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2d = (Graphics2D) g.create();
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            int width = getWidth();
-            int height = getHeight();
-
-            // Create gradient paint
-            GradientPaint gp = new GradientPaint(
-                    0, 0, isHovered ? new Color(100, 180, 255) : new Color(70, 130, 180),
-                    width, height, isHovered ? new Color(70, 130, 180) : new Color(100, 180, 255)
-            );
-
-            g2d.setPaint(gp);
-            g2d.fillRect(0, 0, width, height);
-
-            g2d.dispose();
-
-            super.paintComponent(g);
-        }
+    public static void main(String[] args) {
+        new MainPortal();
     }
 }
-
